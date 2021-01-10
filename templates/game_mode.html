@@ -1,0 +1,26 @@
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="text-center textTitle"> ODRODZENIE </div>
+
+<div class="text-center textGREAT"> WYBIERZ TRYB GRY: </div>
+
+
+<div class="d-flex justify-content-around textBeautify">
+
+    <a class="removeLinkFormat" href="/createPlayer">SOLO </a>
+    <a class="removeLinkFormat" href="/createPlayer">GRACZ vs GRACZ </a>
+    <a class="removeLinkFormat" href="/createPlayer">ONLINE </a>
+
+
+</div>
+
+
+{% endblock content %}

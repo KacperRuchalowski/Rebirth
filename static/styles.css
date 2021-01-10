@@ -1,0 +1,134 @@
+.backgroundStyle {
+    background-color: black;
+
+}
+
+
+.setBackgroundColor {
+
+    background-color: black;
+    width: 100%;
+
+}
+
+.textGREAT {
+
+    font-family: 'Playfair Display SC', serif;
+    font-size: xx-large;
+    font-weight: bolder;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+
+.textTitle {
+
+    font-family: 'Playfair Display SC', serif;
+    font-size: xxx-large;
+    font-weight: bolder;
+    margin-top: 10%;
+    margin-bottom: 10%;
+
+
+
+}
+
+.textName {
+
+    font-family: 'Playfair Display SC', serif;
+    font-size: large;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    margin-left: 10%;
+    color: white;
+
+}
+
+
+.textBeautify {
+
+    font-family: 'Playfair Display SC', serif;
+    font-size: large;
+    margin-top: 20%;
+}
+
+.removeLinkFormat {
+    text-decoration: none;
+    color: white;
+    font-size: x-large;
+}
+
+.removeLinkFormat:hover {
+    color: red;
+    text-decoration: none;
+}
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+
+  padding: 10px;
+
+}
+
+.columnImage {
+      background-image: url("/static/DarkSoulsCard/Column1.png");
+      background-repeat: no-repeat;
+}
+
+.left, .right {
+  width: 27%;
+}
+
+.middle {
+  width: 46%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.textOverimage {
+
+    position: relative;
+
+}
+
+
+
+
+.container {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.tableController {
+
+    margin-left: -50px;
+    margin-bottom: 15px;
+
+}
+
+.imageControl {
+
+    padding: 2%;
+    padding-left: 24%;
+
+
+}
+
+.imagecenter {
+    display: block;
+    margin-left: 8%;
+    margin-top: 5%;
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Gra</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link href="../static/styles.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC&display=swap" rel="stylesheet">
+
+</head>
+<body class="backgroundStyle">
+
+
+<div class="row">
+  <div class="column left columnImage">
+      <div class="textName"> IMIĘ GRACZA: {{ player1.name }} </div>
+      <div class="textName"> ZDROWIE:
+          {% for x in range(0, player1.health) %}
+          <img src="/static/DarkSoulsCard/life.png" alt="life">
+          {% endfor %}
+      </div>
+      <div class="textName"> Pola: {{ player1.active_field }} </div>
+
+  </div>
+
+
+
+
+  <div class="column middle container" style="margin-left: auto">
+
+
+       <img src="/static/DarkSoulsCard/boardPart_board.png" alt="board">
+
+  <div class="carousel-caption">
+
+      <table class="tableController">
+{% for row in range(0,9) %}
+    <tr>
+        {% for column in range (0,9) %}
+        <td>
+            <a>
+
+                {% if player1.active_field[0] == row and player1.active_field[1] == column %}
+                    <img class="imageControl" src="/static/DarkSoulsCard/pawn1.png" alt="player1">
+                {% elif (row == 0 or row == 8) and (column == 0 or column == 4 or column == 8) %} {# narożniki #}
+                    <a href="{{ row, column }}">
+                   <img class="imageControl" src="/static/DarkSoulsCard/boardPart_Extrafield.png" alt="extrafield">
+                    </a>
+                {% elif row == 4 and (column == 0 or column == 8) %} {# środkowe #}
+                    <a href="{{ row, column }}">
+                   <img class="imageControl" src="/static/DarkSoulsCard/boardPart_Extrafield.png" alt="extrafield">
+                    </a>
+                {% elif row == 0 or row == 8 %} {# górne/dolne #}
+                    <a href="{{ row, column }}">
+                   <img class="imageControl" src="/static/DarkSoulsCard/boardPart_field.png" alt="field">
+                    </a>
+                {% elif column == 0 or column == 8 %} {# lewe/prawe #}
+                    <a href="{{ row, column }}">
+                   <img class="imageControl" src="/static/DarkSoulsCard/boardPart_field.png" alt="field">
+                    </a>
+                {% elif column == 2 and row == 2 or column == 2 and row == 6 %} {# czaszka1 #}
+                    <a href="{{ row, column }}">
+                   <img class="imageControl" src="/static/DarkSoulsCard/boardPart_boss.png" alt="field">
+                    </a>
+                {% elif column == 6 and row == 2 or column == 6 and row == 6 %} {# czaszka2 #}
+                    <a href="{{ row, column }}">
+                   <img class="imageControl" src="/static/DarkSoulsCard/boardPart_boss.png" alt="field">
+                    </a>
+                {% endif %}
+
+            </a>
+        </td>
+        {% endfor %}
+    </tr>
+{% endfor %}
+</table>
+
+
+
+
+  </div>
+
+
+  </div>
+  <div class="column right columnImage">
+        <div class="imagecenter">
+      <img src="{{ cardEnemy.image }}" alt="card">
+        </div>
+      <div>
+          <a href="/move"> RZUT KOSTKĄ </a>
+      </div>
+      <div>
+          <a href="/reset"> RESET </a>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+</body>
+
+
+</html>

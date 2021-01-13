@@ -26,19 +26,18 @@ class PlayerCharacter:
         self.name = name
 
     health = 3
-    has_torch = False
     active_field = [0, 0]
     keys = {
-        "toxic": False,
-        "death": False,
-        "bone": False,
-        "madness": False,
+        "toxic": 0,
+        "death": 0,
+        "bone": 0,
+        "madness": 0,
     }
     souls = {
-        "toxic": False,
-        "death": False,
-        "bone": False,
-        "madness": False,
+        "toxic": 0,
+        "death": 0,
+        "bone": 0,
+        "madness": 0,
     }
 
 

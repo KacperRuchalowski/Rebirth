@@ -43,11 +43,7 @@
 
                 {% if player1.active_field[0] == row and player1.active_field[1] == column %}
                     <img class="imageControl" src="/static/DarkSoulsCard/pawn1.png" alt="player1">
-                {% elif (row == 0 or row == 8) and (column == 0 or column == 4 or column == 8) %} {# narożniki #}
-                    <a href="{{ row, column }}">
-                   <img class="imageControl" src="/static/DarkSoulsCard/boardPart_Extrafield.png" alt="extrafield">
-                    </a>
-                {% elif row == 4 and (column == 0 or column == 8) %} {# środkowe #}
+                {% elif (row == 0 or row==4 or row == 8) and (column == 0 or column == 4 or column == 8) and not (row == 4 and column == 4) %} {# narożniki #}
                     <a href="{{ row, column }}">
                    <img class="imageControl" src="/static/DarkSoulsCard/boardPart_Extrafield.png" alt="extrafield">
                     </a>

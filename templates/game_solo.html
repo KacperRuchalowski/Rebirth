@@ -103,19 +103,29 @@
             {% endif %}
             {% endfor %}
                 </table>
-
-
-
-
-
         </div>
 
+<div>
+
+    {% if player1.active_field == [0,0] or player1.active_field == [4,0] or player1.active_field == [8,0]
+            or player1.active_field == [8,4] or player1.active_field == [8,8] or player1.active_field == [4,8]
+            or player1.active_field == [0,8] or player1.active_field == [0,4]%}
+    <div>
+          <a class="textName" href="/move"> CIĄGNIJ KARTĘ </a>
+    </div>
+    {% else %}
+        <div>
+          <a class="textName" href="/move"> RZUT KOSTKĄ </a>
+        </div>
+    {% endif %}
+      <div>
+          <a href="/reset"> RESET </a>
+      </div>
 
 
 
   </div>
-
-
+  </div>
 
 
 
@@ -182,12 +192,7 @@
 
             {% endfor %}
         </div>
-      <div>
-          <a href="/move"> RZUT KOSTKĄ </a>
-      </div>
-      <div>
-          <a href="/reset"> RESET </a>
-      </div>
+
   </div>
 </div>
 

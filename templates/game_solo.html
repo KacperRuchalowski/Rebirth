@@ -21,8 +21,101 @@
           {% endfor %}
       </div>
       <div class="textName"> Pola: {{ player1.active_field }} </div>
+      
+  <div class="textName"> Ekwipunek:
+            <table>
+          {% for key in player1.keys %}
+
+          {% if player1.keys.get(key) == 1 %}
+
+
+                {% if key == "toxic" %}
+                <td>
+                <img class="trigger" src="/static/DarkSoulsCard/toxic_key.png">
+                <div class="hide"> Otwiera drzwi Lorda Zarazy </div>
+                </td>
+
+            {% endif %}
+
+          {% if key == "madness" %}
+                <td>
+                <img class="trigger" src="/static/DarkSoulsCard/madness_key.png">
+                <div class="hide"> Otwiera drzwi Lorda Szaleństwa </div>
+                </td>
+            {% endif %}
+
+          {% if key == "death" %}
+                <td>
+                <img class="trigger" src="/static/DarkSoulsCard/death_key.png">
+                <div class="hide"> Otwiera drzwi Lorda Śmierci </div>
+                </td>
+            {% endif %}
+
+          {% if key == "bone" %}
+                <td>
+                <img class="trigger" src="/static/DarkSoulsCard/bone_key.png">
+                <div class="hide"> Otwiera drzwi Lorda Kości </div>
+                </td>
+            {% endif %}
+
+
+          {% endif %}
+          {% endfor %}
+
+            </table>
+          </div>
+
+        <div class="textName"> DUSZE:
+        <table>
+        {% for soul in player1.souls %}
+
+            {% if player1.souls.get(soul) == 1 %}
+
+
+                    {% if soul == "toxic" %}
+                    <td>
+                        <img class="trigger" src="/static/DarkSoulsCard/soul.png">
+                        <div class="hide">  Dusza Lorda Zarazy </div>
+                    </td>
+                    {% endif %}
+
+                    {% if soul == "death" %}
+                    <td>
+                        <img class="trigger" src="/static/DarkSoulsCard/soul.png">
+                        <div class="hide">  Dusza Lorda Śmierci </div>
+                    </td>
+                    {% endif %}
+
+                    {% if soul == "madness" %}
+                    <td>
+                        <img class="trigger" src="/static/DarkSoulsCard/soul.png">
+                        <div class="hide">  Dusza Lorda Szaleństwa </div>
+                    </td>
+                    {% endif %}
+
+                    {% if soul == "bone" %}
+                    <td>
+                        <img class="trigger" src="/static/DarkSoulsCard/soul.png">
+                        <div class="hide">  Dusza Lorda Kości </div>
+                    </td>
+                    {% endif %}
+
+            {% endif %}
+            {% endfor %}
+                </table>
+
+
+
+
+
+        </div>
+
+
+
 
   </div>
+
+
 
 
 
@@ -81,7 +174,13 @@
   </div>
   <div class="column right columnImage">
         <div class="imagecenter">
-      <img src="{{ cardEnemy.image }}" alt="card">
+
+            {% for deck in Deck %}
+
+            {{ deck.name }} {{ Deck.get(deck) }}
+
+
+            {% endfor %}
         </div>
       <div>
           <a href="/move"> RZUT KOSTKĄ </a>

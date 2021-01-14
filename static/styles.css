@@ -132,3 +132,16 @@
     margin-left: 8%;
     margin-top: 5%;
 }
+
+.grow { transition: all .2s ease-in-out; }
+.grow:hover { transform: scale(2); }
+
+.hide {
+  display: none;
+  font-size: small;
+}
+
+.trigger:hover + .hide {
+  display: inline;
+  color: white;
+}

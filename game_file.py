@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from forms import RegistrationForm, LoginForm
 
-import random
+import random, cards
 
 app = Flask(__name__)
 
@@ -10,15 +10,13 @@ app.config['SECRET_KEY'] = '09412da809127wdawwar'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 
-
-class ActionCard:
-    name = ''
-    image = ''
-
-
-cardEnemy = ActionCard()
-cardEnemy.name = 'Demon'
-cardEnemy.image = '/static/DarkSoulsCard/enemy.png'
+Deck = {
+    cards.cardEnemy: 1,
+    cards.cardKeyBone: 3,
+    cards.cardKeyMadness: 3,
+    cards.cardKeyDeath: 3,
+    cards.cardKeyToxic: 3,
+}
 
 
 class PlayerCharacter:
@@ -28,16 +26,16 @@ class PlayerCharacter:
     health = 3
     active_field = [0, 0]
     keys = {
-        "toxic": 0,
-        "death": 0,
-        "bone": 0,
-        "madness": 0,
+        "toxic": 1,
+        "death": 1,
+        "bone": 1,
+        "madness": 1,
     }
     souls = {
-        "toxic": 0,
-        "death": 0,
-        "bone": 0,
-        "madness": 0,
+        "toxic": 1,
+        "death": 1,
+        "bone": 1,
+        "madness": 1,
     }
 
 
@@ -66,7 +64,7 @@ def home():
 
 @app.route('/solo/')
 def solo():
-    return render_template('game_solo.html', player1=player1, cardEnemy=cardEnemy)
+    return render_template('game_solo.html', player1=player1, Deck=Deck)
 
 
 @app.route('/createPlayer', methods=['GET', 'POST'])
@@ -114,7 +112,7 @@ def move():
             keep = player1.active_field[0] - first_field
             player1.active_field[1] += keep
 
-    if (player1.active_field[0] == 8 and player1.active_field[1] in range(1, 8))\
+    if (player1.active_field[0] == 8 and player1.active_field[1] in range(1, 8)) \
             or player1.active_field[0] == 8 and player1.active_field[1] == 0:  # dolny poziom
         player1.active_field[1] += result
         if player1.active_field[1] > 8 and player1.active_field[0] == 8:  # dolny poziom w gore
@@ -139,4 +137,3 @@ def move():
     first_field = 0
     second_field = 0
     return redirect(url_for('solo'))
-

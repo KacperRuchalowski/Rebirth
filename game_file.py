@@ -26,10 +26,10 @@ class PlayerCharacter:
     health = 3
     active_field = [0, 0]
     keys = {
-        "toxic": 0,
-        "death": 0,
-        "bone": 0,
-        "madness": 0,
+        "toxic": 1,
+        "death": 1,
+        "bone": 1,
+        "madness": 1,
     }
     souls = {
         "toxic": 0,

@@ -41,21 +41,6 @@ class PlayerCharacter:
     }
 
 
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    has_torch = db.Column(db.Boolean)
-    has_toxic = db.Column(db.Boolean)
-    has_death = db.Column(db.Boolean)
-    has_madness = db.Column(db.Boolean)
-    has_bones = db.Column(db.Boolean)
-    health = db.Column(db.Integer)
-
-    def __repr__(self):
-        return f"Player('{self.username}')"
-
-
 @app.route('/')
 def home():
     return render_template('game_mode.html')

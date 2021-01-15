@@ -41,8 +41,6 @@ class PlayerCharacter:
     }
 
 
-player2 = PlayerCharacter(name=None)
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -68,7 +66,9 @@ def createCharacter():
     form = RegistrationForm()
     if form.validate_on_submit():
         global player1
-        player1 = PlayerCharacter(name=form.username)
+        global player2
+        player1 = PlayerCharacter(name=form.username.data)
+        player2 = PlayerCharacter(name=None)
         return redirect(url_for('solo'))
     return render_template('characterCreation.html', form=form)
 

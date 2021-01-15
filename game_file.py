@@ -1,16 +1,14 @@
 import cards
 import random
 
-from flask import Flask, render_template, redirect, url_for, g
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, redirect, url_for
 
 from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '09412da809127wdawwar'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-db = SQLAlchemy(app)
+
 
 Deck = {
     cards.cardEnemy: 1,

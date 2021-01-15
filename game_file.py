@@ -1,8 +1,10 @@
-from flask import Flask, render_template, redirect, url_for, request
-from flask_sqlalchemy import SQLAlchemy
-from forms import RegistrationForm, LoginForm
+import cards
+import random
 
-import random, cards
+from flask import Flask, render_template, redirect, url_for, g
+from flask_sqlalchemy import SQLAlchemy
+
+from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
 
@@ -39,7 +41,6 @@ class PlayerCharacter:
     }
 
 
-player1 = PlayerCharacter(name=None)
 player2 = PlayerCharacter(name=None)
 
 
@@ -62,17 +63,19 @@ def home():
     return render_template('game_mode.html')
 
 
-@app.route('/solo/')
-def solo():
-    return render_template('game_solo.html', player1=player1, Deck=Deck)
-
-
 @app.route('/createPlayer', methods=['GET', 'POST'])
 def createCharacter():
     form = RegistrationForm()
     if form.validate_on_submit():
-        return redirect(url_for('solo', name=form.username))
+        global player1
+        player1 = PlayerCharacter(name=form.username)
+        return redirect(url_for('solo'))
     return render_template('characterCreation.html', form=form)
+
+
+@app.route('/solo/')
+def solo():
+    return render_template('game_solo.html', player1=player1, Deck=Deck)
 
 
 @app.route('/loadPlayer', methods=['GET', 'POST'])
@@ -137,3 +140,7 @@ def move():
     first_field = 0
     second_field = 0
     return redirect(url_for('solo'))
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5129, debug=True)

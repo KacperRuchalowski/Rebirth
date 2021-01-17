@@ -1,14 +1,13 @@
 import cards
 import random
 
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, g
 
 from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '09412da809127wdawwar'
-
 
 Deck = {
     cards.cardEnemy: 1,
@@ -17,6 +16,8 @@ Deck = {
     cards.cardKeyDeath: 3,
     cards.cardKeyToxic: 3,
 }
+result = 0
+keep = 0
 
 
 class PlayerCharacter:
@@ -24,12 +25,12 @@ class PlayerCharacter:
         self.name = name
 
     health = 3
-    active_field = [0, 0]
+    active_field = [8, 0]
     keys = {
-        "toxic": 1,
-        "death": 1,
-        "bone": 1,
-        "madness": 1,
+        "toxic": 0,
+        "death": 0,
+        "bone": 0,
+        "madness": 0,
     }
     souls = {
         "toxic": 0,
@@ -56,9 +57,51 @@ def createCharacter():
     return render_template('characterCreation.html', form=form)
 
 
+@app.route('/move')
+def move():
+    global result, keep
+    result = random.randint(1, 6)
+    if player1.active_field[1] == 0 and player1.active_field[0] == 0:  # pole 0,0
+        player1.active_field[1] += result
+    elif player1.active_field[1] in range(1, 8) and player1.active_field[0] == 0:  # górny wiersz
+        player1.active_field[1] += result
+        if player1.active_field[1] > 8 and player1.active_field[0] == 0:
+            keep = player1.active_field[1] - 8
+            player1.active_field[1] = 8
+            player1.active_field[0] += keep
+    elif player1.active_field[0] == 0 and player1.active_field[1] == 8:  # pole 0,8
+        player1.active_field[0] += result
+    elif player1.active_field[0] in range(1, 8) and player1.active_field[1] == 8:  # prawa kolumna
+        player1.active_field[0] += result
+        if player1.active_field[0] > 8 and player1.active_field[1] == 8:
+            keep = player1.active_field[0] - 8
+            player1.active_field[0] = 8
+            player1.active_field[1] -= keep
+    elif player1.active_field[0] == 8 and player1.active_field[1] == 8:  # pole 8,8
+        player1.active_field[1] -= result
+    elif player1.active_field[1] in range(1, 8) and player1.active_field[0] == 8:  # dolny wiersz
+        player1.active_field[1] -= result
+        if player1.active_field[1] < 0 and player1.active_field[0] == 8:
+            keep = player1.active_field[1] * -1
+            player1.active_field[1] = 0
+            player1.active_field[0] = 8
+            player1.active_field[0] -= keep
+    elif player1.active_field[0] == 8 and player1.active_field[1] == 0:  # pole 8,0
+        player1.active_field[0] -= result
+    elif player1.active_field[0] in range(1, 8) and player1.active_field[1] == 0:
+        player1.active_field[0] -= result
+        if player1.active_field[0] < 0 and player1.active_field[1] == 0:
+            keep = player1.active_field[0] * -1
+            player1.active_field[0] = 0
+            player1.active_field[1] = 0
+            player1.active_field[1] += keep
+
+    return redirect(url_for('solo'))
+
+
 @app.route('/solo/')
 def solo():
-    return render_template('game_solo.html', player1=player1, Deck=Deck)
+    return render_template('game_solo.html', player1=player1, Deck=Deck, keep=keep, result=result)
 
 
 @app.route('/loadPlayer', methods=['GET', 'POST'])
@@ -81,47 +124,6 @@ def online():
 def reset():
     player1.active_field[0] = 0
     player1.active_field[1] = 0
-    return redirect(url_for('solo'))
-
-
-@app.route('/move')
-def move():
-    result = random.randint(1, 6)
-    first_field = player1.active_field[0]
-    second_field = player1.active_field[1]
-    keep = 0
-    if (player1.active_field[0] == 0 and player1.active_field[1] == 0) \
-            or player1.active_field[0] in range(1, 8) and player1.active_field[1] == 0:  # pozycja startowa i lewy pion
-        player1.active_field[0] += result
-        if player1.active_field[0] > 8 and player1.active_field[1] == 0:  # lewa strona w dol
-            player1.active_field[0] = 8
-            keep = player1.active_field[0] - first_field
-            player1.active_field[1] += keep
-
-    if (player1.active_field[0] == 8 and player1.active_field[1] in range(1, 8)) \
-            or player1.active_field[0] == 8 and player1.active_field[1] == 0:  # dolny poziom
-        player1.active_field[1] += result
-        if player1.active_field[1] > 8 and player1.active_field[0] == 8:  # dolny poziom w gore
-            player1.active_field[1] = 8
-            keep = player1.active_field[1] - second_field
-            player1.active_field[0] -= keep
-    if (player1.active_field[0] in range(1, 8) and player1.active_field[1] == 8) \
-            or player1.active_field[0] == 8 and player1.active_field[1] == 8:  # prawy pion
-        player1.active_field[0] -= result
-        if player1.active_field[0] < 0 and player1.active_field[1] == 8:
-            player1.active_field[0] = 0
-            keep = result - player1.active_field[0]
-            player1.active_field[1] -= keep
-
-    if (player1.active_field[0] == 0 and player1.active_field[1] in range(1, 8)) \
-            or player1.active_field[0] == 0 and player1.active_field[1] == 8:  # gorny poziom
-        player1.active_field[1] -= result
-        if player1.active_field[1] < 0 and player1.active_field[0] == 0:
-            player1.active_field[1] = 0
-            keep = result - player1.active_field[1]
-            player1.active_field[0] += keep
-    first_field = 0
-    second_field = 0
     return redirect(url_for('solo'))
 
 

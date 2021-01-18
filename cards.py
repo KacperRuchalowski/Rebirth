@@ -4,7 +4,7 @@ class ActionCard:
 
 
 cardEnemy = ActionCard()
-cardEnemy.name = 'Demon'
+cardEnemy.name = 'Enemy'
 cardEnemy.image = '/static/DarkSoulsCard/enemy.png'
 
 cardKeyBone = ActionCard()
@@ -23,3 +23,46 @@ cardKeyToxic = ActionCard()
 cardKeyToxic.name = 'KeyToxic'
 cardKeyToxic.image = '/static/DarkSoulsCard/key_toxic.png'
 
+cardKeyToxic = ActionCard()
+cardKeyToxic.name = 'KeyToxic'
+cardKeyToxic.image = '/static/DarkSoulsCard/key_toxic.png'
+
+cardLordSoul = ActionCard()
+cardLordSoul.name = 'lordSoul'
+cardLordSoul.image = '/static/DarkSoulsCard/lord_Soul.png'
+
+cardLoseHealth = ActionCard()
+cardLoseHealth.name = 'loseHealth'
+cardLoseHealth.image = '/static/DarkSoulsCard/lose_health.png'
+
+cardLoseItem = ActionCard()
+cardLoseItem.name = 'loseItem'
+cardLoseItem.image = '/static/DarkSoulsCard/lose_item.png'
+
+cardMagicArrow = ActionCard()
+cardMagicArrow.name = 'magicArrow'
+cardMagicArrow.image = '/static/DarkSoulsCard/magic_arrow.png'
+
+recoverHealth = ActionCard()
+recoverHealth.name = 'recoverHealth'
+recoverHealth.image = '/static/DarkSoulsCard/recover_health.png'
+
+cardStasis = ActionCard()
+cardStasis.name = 'stasis'
+cardStasis.image = '/static/DarkSoulsCard/stasis.png'
+
+cardThief = ActionCard()
+cardThief.name = 'thief'
+cardThief.image = '/static/DarkSoulsCard/thief.png'
+
+cardTorch = ActionCard()
+cardTorch.name = 'torch'
+cardTorch.image = '/static/DarkSoulsCard/torch.png'
+
+Deck = [cardKeyBone, cardKeyBone, cardKeyBone, cardKeyMadness, cardKeyMadness, cardKeyMadness, cardKeyDeath,
+        cardKeyDeath, cardKeyDeath, cardKeyToxic, cardKeyToxic, cardKeyToxic, cardTorch, cardTorch, cardThief,
+        cardThief, cardThief, cardStasis, cardStasis, cardStasis, cardMagicArrow, cardMagicArrow, cardMagicArrow,
+        cardMagicArrow, cardLoseHealth, cardLoseHealth, cardLoseHealth, cardLoseHealth, cardLoseItem, cardLoseItem,
+        cardLoseItem]
+
+ConstantDeck = [cardEnemy, cardLordSoul]

@@ -1,7 +1,7 @@
 import cards
 import random
 
-from flask import Flask, render_template, redirect, url_for, g
+from flask import Flask, render_template, redirect, url_for
 
 from forms import RegistrationForm, LoginForm
 
@@ -9,13 +9,9 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '09412da809127wdawwar'
 
-Deck = {
-    cards.cardEnemy: 1,
-    cards.cardKeyBone: 3,
-    cards.cardKeyMadness: 3,
-    cards.cardKeyDeath: 3,
-    cards.cardKeyToxic: 3,
-}
+Deck = cards.Deck
+ConstantDeck = cards.ConstantDeck
+
 result = 0
 keep = 0
 
@@ -26,6 +22,9 @@ class PlayerCharacter:
 
     health = 3
     active_field = [8, 0]
+    strength = 0
+    resistance = 0
+    is_attacked = 0
     keys = {
         "toxic": 0,
         "death": 0,
@@ -59,6 +58,7 @@ def createCharacter():
 
 @app.route('/move')
 def move():
+    player1.is_attacked = 0
     global result, keep
     result = random.randint(1, 6)
     if player1.active_field[1] == 0 and player1.active_field[0] == 0:  # pole 0,0
@@ -96,12 +96,33 @@ def move():
             player1.active_field[1] = 0
             player1.active_field[1] += keep
 
+    chance = random.randint(1, 100)
+    if chance <= 20:
+        player1.is_attacked = 1
+    return redirect(url_for('solo'))
+
+
+@app.route('/battle')
+def battle():
+    attack_power = random.randint(1, 6) + player1.strength
+    enemy_attack = random.randint(1, 6) - player1.resistance
+    if attack_power > enemy_attack:
+        check = random.randint(1, 2)
+        if check == 1:
+            player1.resistance += 1
+        else:
+            player1.strength += 1
+    else:
+        player1.health -= 1
+    player1.is_attacked = 0
+
     return redirect(url_for('solo'))
 
 
 @app.route('/solo/')
 def solo():
-    return render_template('game_solo.html', player1=player1, Deck=Deck, keep=keep, result=result)
+    return render_template('game_solo.html', player1=player1, Deck=Deck,
+                           keep=keep, result=result, ConstantDeck=ConstantDeck)
 
 
 @app.route('/loadPlayer', methods=['GET', 'POST'])

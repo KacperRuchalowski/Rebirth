@@ -118,25 +118,25 @@
 
     {% if player1.active_field == [0,0] and player1.keys.get("death") == 1 and player1.souls.get("death") == 0%}
         <div>
-          <a class="textName" href="/move"> ATAKUJ LORDA ŚMIERCI </a>
+          <a class="textName" href="/battleBoss/death"> ATAKUJ LORDA ŚMIERCI </a>
         </div>
     {% endif %}
 
     {% if player1.active_field == [0,8] and player1.keys.get("toxic") == 1 and player1.souls.get("toxic") == 0%}
         <div>
-          <a class="textName" href="/move"> ATAKUJ LORDA ZARAZY </a>
+          <a class="textName" href="/battleBoss/toxic"> ATAKUJ LORDA ZARAZY </a>
         </div>
     {% endif %}
 
     {% if player1.active_field == [8,8] and player1.keys.get("bone") == 1 and player1.souls.get("bone") == 0%}
         <div>
-          <a class="textName" href="/move"> ATAKUJ LORDA KOŚCI </a>
+          <a class="textName" href="/battleBoss/bone"> ATAKUJ LORDA KOŚCI </a>
         </div>
     {% endif %}
 
     {% if player1.active_field == [8,0] and player1.keys.get("madness") == 1 and player1.souls.get("madness") == 0%}
         <div>
-          <a class="textName" href="/move"> ATAKUJ LORDA SZALEŃSTWA </a>
+          <a class="textName" href="/battleBoss/madness"> ATAKUJ LORDA SZALEŃSTWA </a>
         </div>
     {% endif %}
 
@@ -162,6 +162,8 @@
 
                 {% if player1.active_field[0] == row and player1.active_field[1] == column %}
                     <img class="imageControl" src="/static/DarkSoulsCard/pawn1.png" alt="player1">
+                {% elif player2.active_field[0] == row and player2.active_field[1] == column %}
+                    <img class="imageControl" src="/static/DarkSoulsCard/pawn2.png" alt="player2">
                 {% elif (row == 0 or row==4 or row == 8) and (column == 0 or column == 4 or column == 8) and not (row == 4 and column == 4) %} {# narożniki #}
                     <a href="{{ row, column }}">
                    <img class="imageControl" src="/static/DarkSoulsCard/boardPart_Extrafield.png" alt="extrafield">

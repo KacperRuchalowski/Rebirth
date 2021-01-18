@@ -54,6 +54,7 @@ def createCharacter():
         global player2
         player1 = PlayerCharacter(name=form.username.data)
         player2 = PlayerCharacter(name=None)
+        player2.active_field = [8, 8]
         return redirect(url_for('solo'))
     return render_template('characterCreation.html', form=form)
 
@@ -123,6 +124,25 @@ def battle():
     return redirect(url_for('solo'))
 
 
+@app.route('/battleBoss/<bossID>')
+def battleBoss(bossID=None):
+    attack_power = random.randint(1, 6) + player1.strength
+    boss_attack = random.randint(1, 10) - player1.resistance
+    if attack_power > boss_attack:
+        if bossID == 'death':
+            player1.souls['death'] = 1
+        elif bossID == 'bone':
+            player1.souls['bone'] = 1
+        elif bossID == 'toxic':
+            player1.souls['toxic'] = 1
+        elif bossID == 'madness':
+            player1.souls['madness'] = 1
+    else:
+        player1.health -= 1
+
+    return redirect(url_for('solo'))
+
+
 @app.route('/draw')
 def draw():
     player1.has_drawn = 1
@@ -150,7 +170,7 @@ def draw():
 
 @app.route('/solo/')
 def solo():
-    return render_template('game_solo.html', player1=player1, Deck=Deck,
+    return render_template('game_solo.html', player1=player1, player2=player2, Deck=Deck,
                            keep=keep, result=result, ConstantDeck=ConstantDeck, card=card)
 
 

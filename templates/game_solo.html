@@ -15,14 +15,38 @@
 
 <div class="row">
   <div class="column left columnImage">
-      <div class="textName"> IMIĘ GRACZA: {{ player1.name }} </div>
+      <div class="textName"> IMIĘ GRACZA:
+          {% if active_player == 1 %}
+          {{ player1.name }}
+          {% elif active_player == -1 %}
+          {{ player2.name }}
+          {% endif %}
+      </div>
       <div class="textName"> ZDROWIE:
+      {% if active_player == 1 %}
           {% for x in range(0, player1.health) %}
           <img src="/static/DarkSoulsCard/life.png" alt="life">
           {% endfor %}
+      {% elif active_player == -1 %}
+          {% for x in range(0, player2.health) %}
+          <img src="/static/DarkSoulsCard/life.png" alt="life">
+          {% endfor %}
+      {% endif %}
       </div>
-      <div class="textName"> Siła: {{ player1.strength }} </div>
-      <div class="textName"> Odporność: {{ player1.resistance }} </div>
+      <div class="textName"> Siła:
+          {% if active_player == 1 %}
+          {{ player1.strength }}
+          {% elif active_player == -1 %}
+          {{ player2.strength }}
+          {% endif %}
+      </div>
+      <div class="textName"> Odporność:
+          {% if active_player == 1 %}
+          {{ player1.resistance }}
+          {% elif active_player == -1 %}
+          {{ player2.resistance }}
+          {% endif %}
+      </div>
       <div class="textName"> Wynik rzutu: {{ result }} </div>
   <div class="textName"> Ekwipunek:
             <table>
@@ -110,31 +134,41 @@
 <div>
 
 
-    {% if player1.is_attacked == 0 %}
+    {% if player1.is_attacked == 0 and active_player == 1 %}
         <div>
-          <a class="textName" href="/move"> RZUT KOSTKĄ </a>
+          <a class="textName" href="/move/1"> RZUT KOSTKĄ </a>
         </div>
     {% endif %}
 
-    {% if player1.active_field == [0,0] and player1.keys.get("death") == 1 and player1.souls.get("death") == 0%}
+    {% if player1.is_attacked == 0 and active_player == -1 %}
+        <div>
+          <a class="textName" href="/move/2"> RZUCA CPU </a>
+        </div>
+    {% endif %}
+
+    {% if player1.active_field == [0,0] and player1.keys.get("death") == 1 and player1.souls.get("death") == 0 and
+            active_player == 1%}
         <div>
           <a class="textName" href="/battleBoss/death"> ATAKUJ LORDA ŚMIERCI </a>
         </div>
     {% endif %}
 
-    {% if player1.active_field == [0,8] and player1.keys.get("toxic") == 1 and player1.souls.get("toxic") == 0%}
+    {% if player1.active_field == [0,8] and player1.keys.get("toxic") == 1 and player1.souls.get("toxic") == 0
+            and active_player == 1%}
         <div>
           <a class="textName" href="/battleBoss/toxic"> ATAKUJ LORDA ZARAZY </a>
         </div>
     {% endif %}
 
-    {% if player1.active_field == [8,8] and player1.keys.get("bone") == 1 and player1.souls.get("bone") == 0%}
+    {% if player1.active_field == [8,8] and player1.keys.get("bone") == 1 and player1.souls.get("bone") == 0
+            and active_player == 1%}
         <div>
           <a class="textName" href="/battleBoss/bone"> ATAKUJ LORDA KOŚCI </a>
         </div>
     {% endif %}
 
-    {% if player1.active_field == [8,0] and player1.keys.get("madness") == 1 and player1.souls.get("madness") == 0%}
+    {% if player1.active_field == [8,0] and player1.keys.get("madness") == 1 and player1.souls.get("madness") == 0
+            and active_player ==1%}
         <div>
           <a class="textName" href="/battleBoss/madness"> ATAKUJ LORDA SZALEŃSTWA </a>
         </div>

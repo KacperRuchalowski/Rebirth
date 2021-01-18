@@ -15,6 +15,7 @@ ConstantDeck = cards.ConstantDeck
 result = 0
 keep = 0
 card = None
+active_player = 1
 
 
 class PlayerCharacter:
@@ -53,57 +54,102 @@ def createCharacter():
         global player1
         global player2
         player1 = PlayerCharacter(name=form.username.data)
-        player2 = PlayerCharacter(name=None)
+        player2 = PlayerCharacter(name='CPU')
         player2.active_field = [8, 8]
         return redirect(url_for('solo'))
     return render_template('characterCreation.html', form=form)
 
 
-@app.route('/move')
-def move():
-    player1.is_attacked = 0
-    player1.has_drawn = 0
-    global result, keep, card
-    result = random.randint(1, 6)
-    if player1.active_field[1] == 0 and player1.active_field[0] == 0:  # pole 0,0
-        player1.active_field[1] += result
-    elif player1.active_field[1] in range(1, 8) and player1.active_field[0] == 0:  # górny wiersz
-        player1.active_field[1] += result
-        if player1.active_field[1] > 8 and player1.active_field[0] == 0:
-            keep = player1.active_field[1] - 8
-            player1.active_field[1] = 8
-            player1.active_field[0] += keep
-    elif player1.active_field[0] == 0 and player1.active_field[1] == 8:  # pole 0,8
-        player1.active_field[0] += result
-    elif player1.active_field[0] in range(1, 8) and player1.active_field[1] == 8:  # prawa kolumna
-        player1.active_field[0] += result
-        if player1.active_field[0] > 8 and player1.active_field[1] == 8:
-            keep = player1.active_field[0] - 8
-            player1.active_field[0] = 8
-            player1.active_field[1] -= keep
-    elif player1.active_field[0] == 8 and player1.active_field[1] == 8:  # pole 8,8
-        player1.active_field[1] -= result
-    elif player1.active_field[1] in range(1, 8) and player1.active_field[0] == 8:  # dolny wiersz
-        player1.active_field[1] -= result
-        if player1.active_field[1] < 0 and player1.active_field[0] == 8:
-            keep = player1.active_field[1] * -1
-            player1.active_field[1] = 0
-            player1.active_field[0] = 8
-            player1.active_field[0] -= keep
-    elif player1.active_field[0] == 8 and player1.active_field[1] == 0:  # pole 8,0
-        player1.active_field[0] -= result
-    elif player1.active_field[0] in range(1, 8) and player1.active_field[1] == 0:
-        player1.active_field[0] -= result
-        if player1.active_field[0] < 0 and player1.active_field[1] == 0:
-            keep = player1.active_field[0] * -1
-            player1.active_field[0] = 0
-            player1.active_field[1] = 0
-            player1.active_field[1] += keep
+@app.route('/move/<player>')
+def move(player):
+    global result, keep, card, active_player
+    if player == '1':
+        player1.is_attacked = 0
+        player1.has_drawn = 0
+        result = random.randint(1, 6)
+        if player1.active_field[1] == 0 and player1.active_field[0] == 0:  # pole 0,0
+            player1.active_field[1] += result
+        elif player1.active_field[1] in range(1, 8) and player1.active_field[0] == 0:  # górny wiersz
+            player1.active_field[1] += result
+            if player1.active_field[1] > 8 and player1.active_field[0] == 0:
+                keep = player1.active_field[1] - 8
+                player1.active_field[1] = 8
+                player1.active_field[0] += keep
+        elif player1.active_field[0] == 0 and player1.active_field[1] == 8:  # pole 0,8
+            player1.active_field[0] += result
+        elif player1.active_field[0] in range(1, 8) and player1.active_field[1] == 8:  # prawa kolumna
+            player1.active_field[0] += result
+            if player1.active_field[0] > 8 and player1.active_field[1] == 8:
+                keep = player1.active_field[0] - 8
+                player1.active_field[0] = 8
+                player1.active_field[1] -= keep
+        elif player1.active_field[0] == 8 and player1.active_field[1] == 8:  # pole 8,8
+            player1.active_field[1] -= result
+        elif player1.active_field[1] in range(1, 8) and player1.active_field[0] == 8:  # dolny wiersz
+            player1.active_field[1] -= result
+            if player1.active_field[1] < 0 and player1.active_field[0] == 8:
+                keep = player1.active_field[1] * -1
+                player1.active_field[1] = 0
+                player1.active_field[0] = 8
+                player1.active_field[0] -= keep
+        elif player1.active_field[0] == 8 and player1.active_field[1] == 0:  # pole 8,0
+            player1.active_field[0] -= result
+        elif player1.active_field[0] in range(1, 8) and player1.active_field[1] == 0:
+            player1.active_field[0] -= result
+            if player1.active_field[0] < 0 and player1.active_field[1] == 0:
+                keep = player1.active_field[0] * -1
+                player1.active_field[0] = 0
+                player1.active_field[1] = 0
+                player1.active_field[1] += keep
+        chance = random.randint(1, 100)
+        if chance <= 20:
+            player1.is_attacked = 1
+        card = None
+        active_player = active_player*-1
+    elif player == '2':
+        player2.is_attacked = 0
+        player2.has_drawn = 0
+        result = random.randint(1, 6)
+        if player2.active_field[1] == 0 and player2.active_field[0] == 0:  # pole 0,0
+            player2.active_field[1] += result
+        elif player2.active_field[1] in range(1, 8) and player2.active_field[0] == 0:  # górny wiersz
+            player2.active_field[1] += result
+            if player2.active_field[1] > 8 and player2.active_field[0] == 0:
+                keep = player2.active_field[1] - 8
+                player2.active_field[1] = 8
+                player2.active_field[0] += keep
+        elif player2.active_field[0] == 0 and player2.active_field[1] == 8:  # pole 0,8
+            player2.active_field[0] += result
+        elif player2.active_field[0] in range(1, 8) and player2.active_field[1] == 8:  # prawa kolumna
+            player2.active_field[0] += result
+            if player2.active_field[0] > 8 and player2.active_field[1] == 8:
+                keep = player2.active_field[0] - 8
+                player2.active_field[0] = 8
+                player2.active_field[1] -= keep
+        elif player2.active_field[0] == 8 and player2.active_field[1] == 8:  # pole 8,8
+            player2.active_field[1] -= result
+        elif player2.active_field[1] in range(1, 8) and player2.active_field[0] == 8:  # dolny wiersz
+            player2.active_field[1] -= result
+            if player2.active_field[1] < 0 and player2.active_field[0] == 8:
+                keep = player2.active_field[1] * -1
+                player2.active_field[1] = 0
+                player2.active_field[0] = 8
+                player2.active_field[0] -= keep
+        elif player2.active_field[0] == 8 and player2.active_field[1] == 0:  # pole 8,0
+            player2.active_field[0] -= result
+        elif player2.active_field[0] in range(1, 8) and player2.active_field[1] == 0:
+            player2.active_field[0] -= result
+            if player2.active_field[0] < 0 and player2.active_field[1] == 0:
+                keep = player2.active_field[0] * -1
+                player2.active_field[0] = 0
+                player2.active_field[1] = 0
+                player2.active_field[1] += keep
 
-    chance = random.randint(1, 100)
-    if chance <= 20:
-        player1.is_attacked = 1
-    card = None
+        chance = random.randint(1, 100)
+        if chance <= 20:
+            player2.is_attacked = 1
+        card = None
+        active_player = active_player * -1
     return redirect(url_for('solo'))
 
 
@@ -171,7 +217,7 @@ def draw():
 @app.route('/solo/')
 def solo():
     return render_template('game_solo.html', player1=player1, player2=player2, Deck=Deck,
-                           keep=keep, result=result, ConstantDeck=ConstantDeck, card=card)
+                           keep=keep, result=result, ConstantDeck=ConstantDeck, card=card, active_player=active_player)
 
 
 @app.route('/loadPlayer', methods=['GET', 'POST'])

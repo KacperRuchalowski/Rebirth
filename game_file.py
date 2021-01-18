@@ -9,11 +9,12 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = '09412da809127wdawwar'
 
-Deck = cards.Deck
+Deck = cards.build_deck()
 ConstantDeck = cards.ConstantDeck
 
 result = 0
 keep = 0
+card = None
 
 
 class PlayerCharacter:
@@ -21,10 +22,11 @@ class PlayerCharacter:
         self.name = name
 
     health = 3
-    active_field = [8, 0]
+    active_field = [0, 0]
     strength = 0
     resistance = 0
     is_attacked = 0
+    has_drawn = 0
     keys = {
         "toxic": 0,
         "death": 0,
@@ -59,7 +61,8 @@ def createCharacter():
 @app.route('/move')
 def move():
     player1.is_attacked = 0
-    global result, keep
+    player1.has_drawn = 0
+    global result, keep, card
     result = random.randint(1, 6)
     if player1.active_field[1] == 0 and player1.active_field[0] == 0:  # pole 0,0
         player1.active_field[1] += result
@@ -99,6 +102,7 @@ def move():
     chance = random.randint(1, 100)
     if chance <= 20:
         player1.is_attacked = 1
+    card = None
     return redirect(url_for('solo'))
 
 
@@ -119,10 +123,35 @@ def battle():
     return redirect(url_for('solo'))
 
 
+@app.route('/draw')
+def draw():
+    player1.has_drawn = 1
+    global Deck
+    random.shuffle(Deck)
+    global card
+    if Deck:
+        card = Deck.pop()
+    else:
+        Deck = cards.build_deck()
+        card = Deck.pop()
+    if card.name == 'loseHealth':
+        player1.health -= 1
+    elif card.name == 'KeyBone':
+        player1.keys["bone"] = 1
+    elif card.name == 'KeyDeath':
+        player1.keys["death"] = 1
+    elif card.name == 'KeyToxic':
+        player1.keys["toxic"] = 1
+    elif card.name == 'KeyMadness':
+        player1.keys["madness"] = 1
+
+    return redirect(url_for('solo'))
+
+
 @app.route('/solo/')
 def solo():
     return render_template('game_solo.html', player1=player1, Deck=Deck,
-                           keep=keep, result=result, ConstantDeck=ConstantDeck)
+                           keep=keep, result=result, ConstantDeck=ConstantDeck, card=card)
 
 
 @app.route('/loadPlayer', methods=['GET', 'POST'])

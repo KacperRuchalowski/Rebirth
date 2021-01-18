@@ -1,3 +1,14 @@
+def build_deck():
+    deck = [cardKeyBone, cardKeyBone, cardKeyBone, cardKeyMadness, cardKeyMadness, cardKeyMadness, cardKeyDeath,
+            cardKeyDeath, cardKeyDeath, cardKeyToxic, cardKeyToxic, cardKeyToxic, cardTorch, cardTorch, cardThief,
+            cardThief, cardThief, cardStasis, cardStasis, cardStasis, cardMagicArrow, cardMagicArrow,
+            cardMagicArrow,
+            cardMagicArrow, cardLoseHealth, cardLoseHealth, cardLoseHealth, cardLoseHealth, cardLoseItem,
+            cardLoseItem,
+            cardLoseItem]
+    return deck
+
+
 class ActionCard:
     name = ''
     image = ''
@@ -58,11 +69,5 @@ cardThief.image = '/static/DarkSoulsCard/thief.png'
 cardTorch = ActionCard()
 cardTorch.name = 'torch'
 cardTorch.image = '/static/DarkSoulsCard/torch.png'
-
-Deck = [cardKeyBone, cardKeyBone, cardKeyBone, cardKeyMadness, cardKeyMadness, cardKeyMadness, cardKeyDeath,
-        cardKeyDeath, cardKeyDeath, cardKeyToxic, cardKeyToxic, cardKeyToxic, cardTorch, cardTorch, cardThief,
-        cardThief, cardThief, cardStasis, cardStasis, cardStasis, cardMagicArrow, cardMagicArrow, cardMagicArrow,
-        cardMagicArrow, cardLoseHealth, cardLoseHealth, cardLoseHealth, cardLoseHealth, cardLoseItem, cardLoseItem,
-        cardLoseItem]
 
 ConstantDeck = [cardEnemy, cardLordSoul]

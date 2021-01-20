@@ -1,6 +1,6 @@
 import cards
 import random
-
+import pickle
 from flask import Flask, render_template, redirect, url_for
 
 from forms import RegistrationForm, LoginForm
@@ -30,10 +30,10 @@ class PlayerCharacter:
     has_drawn = 0
     has_torch = 0
     keys = {
-        "toxic": 1,
-        "death": 1,
-        "bone": 1,
-        "madness": 1,
+        "toxic": 0,
+        "death": 0,
+        "bone": 0,
+        "madness": 0,
     }
     souls = {
         "toxic": 0,
@@ -246,20 +246,18 @@ def LoadCharacter():
     return render_template('characterLoading.html', form=form)
 
 
-@app.route('/hotseat')
-def hotseat():
-    return render_template('game_hotseat.html')
+@app.route('/save')
+def save():
+    data = [player1, player2]
+    with open(player1.name, 'wb') as gameSave:
+        pickle.dump(data, gameSave)
+    return redirect(url_for('solo'))
 
 
-@app.route('/online')
-def online():
-    return render_template('game_online.html')
-
-
-@app.route('/reset')
-def reset():
-    player1.active_field[0] = 0
-    player1.active_field[1] = 0
+@app.route('/load')
+def load():
+    with open(player1.name, "rb") as gameSave:
+        pickle.load(gameSave)
     return redirect(url_for('solo'))
 
 

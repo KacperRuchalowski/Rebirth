@@ -29,7 +29,6 @@
       <div class="textName"> Odporność:
           {{ player1.resistance }}
       </div>
-      <div class="textName"> Wynik rzutu: {{ result }} </div>
   <div class="textName"> Ekwipunek:
             <table>
           {% for key in player1.keys %}
@@ -47,7 +46,7 @@
 
           {% if key == "madness" %}
                 <td>
-                <img class="trigger" src="/static/DarkSoulsCard/madness_key.png">
+                <img class="trigger" src="/static/DarkSoulsCard/madness_key.png" alt="madnesskey">
                 <div class="hide"> Otwiera drzwi Lorda Szaleństwa </div>
                 </td>
             {% endif %}
@@ -125,6 +124,7 @@
     {% if player1.is_attacked == 0 and active_player == 1 and player1.has_torch == 0 %}
         <div>
           <a class="textName" href="/move/1/0"> RZUT KOSTKĄ </a>
+          <a class="textName" href="/save"> ZAPISZ GRĘ! </a>
         </div>
     {% elif player1.has_torch == 1 and player1.is_attacked == 0 and active_player == 1 %}
         <div>
@@ -135,6 +135,7 @@
           <a class="textName" href="/move/1/5"> 5 </a>
           <a class="textName" href="/move/1/6"> 6 </a>
         </div>
+        <div><a class="textName" href="/save"> ZAPISZ GRĘ! </a></div>
 
     {% endif %}
 
@@ -225,12 +226,8 @@
 {% endfor %}
 </table>
 
-
-
-
   </div>
   </div>
-
 
   <div class="column right columnImage">
         {% if player1.is_attacked == 1 %}
@@ -355,8 +352,8 @@
                 </table>
         </div>
         {% endif %}
-
   </div>
+
 </div>
 
 

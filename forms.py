@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, RadioField
 from wtforms.validators import DataRequired, length
 
 
@@ -9,5 +9,5 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), length(min=2, max=15)])
+    username = RadioField('Username', validators=[DataRequired(), length(min=2, max=15)])
     submit = SubmitField('Login')

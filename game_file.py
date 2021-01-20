@@ -28,6 +28,7 @@ class PlayerCharacter:
     resistance = 0
     is_attacked = 0
     has_drawn = 0
+    has_torch = 0
     keys = {
         "toxic": 0,
         "death": 0,
@@ -60,13 +61,17 @@ def createCharacter():
     return render_template('characterCreation.html', form=form)
 
 
-@app.route('/move/<player>')
-def move(player):
+@app.route('/move/<player>/<int:torchAmount>')
+def move(player, torchAmount):
     global result, keep, card, active_player
+
     if player == '1':
         player1.is_attacked = 0
         player1.has_drawn = 0
-        result = random.randint(1, 6)
+        if torchAmount == 0:
+            result = random.randint(1, 6)
+        elif torchAmount > 0:
+            result = torchAmount
         if player1.active_field[1] == 0 and player1.active_field[0] == 0:  # pole 0,0
             player1.active_field[1] += result
         elif player1.active_field[1] in range(1, 8) and player1.active_field[0] == 0:  # górny wiersz
@@ -105,7 +110,7 @@ def move(player):
         if chance <= 20:
             player1.is_attacked = 1
         card = None
-        active_player = active_player*-1
+        active_player = active_player * -1
     elif player == '2':
         player2.is_attacked = 0
         player2.has_drawn = 0
@@ -210,7 +215,32 @@ def draw():
         player1.keys["toxic"] = 1
     elif card.name == 'KeyMadness':
         player1.keys["madness"] = 1
-
+    elif card.name == 'magicArrow':
+        player2.health -= 1
+    elif card.name == 'recoverHealth':
+        player1.health += 1
+    elif card.name == 'thief':
+        stolen = random.randint(1, 4)
+        if stolen == 1:
+            player2.keys["bone"] = 0
+        elif stolen == 2:
+            player2.keys["death"] = 0
+        elif stolen == 2:
+            player2.keys["toxic"] = 0
+        elif stolen == 2:
+            player2.keys["madness"] = 0
+    elif card.name == 'loseItem':
+        stolen = random.randint(1, 4)
+        if stolen == 1:
+            player1.keys["bone"] = 0
+        elif stolen == 2:
+            player1.keys["death"] = 0
+        elif stolen == 2:
+            player1.keys["toxic"] = 0
+        elif stolen == 2:
+            player1.keys["madness"] = 0
+    elif card.name == "torch":
+        player1.has_torch = 1
     return redirect(url_for('solo'))
 
 

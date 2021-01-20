@@ -70,6 +70,12 @@
           {% endif %}
           {% endfor %}
 
+          {% if player1.has_torch == 1 %}
+            <td>
+                <img class="trigger" src="/static/DarkSoulsCard/torch_item.png">
+                <div class="hide"> Pochodnia </div>
+                </td>
+          {% endif %}
             </table>
           </div>
 
@@ -116,15 +122,25 @@
 <div>
 
 
-    {% if player1.is_attacked == 0 and active_player == 1 %}
+    {% if player1.is_attacked == 0 and active_player == 1 and player1.has_torch == 0 %}
         <div>
-          <a class="textName" href="/move/1"> RZUT KOSTKĄ </a>
+          <a class="textName" href="/move/1/0"> RZUT KOSTKĄ </a>
         </div>
+    {% elif player1.has_torch == 1 and player1.is_attacked == 0 and active_player == 1 %}
+        <div>
+          <a class="textName" href="/move/1/1"> 1 </a>
+          <a class="textName" href="/move/1/2"> 2 </a>
+          <a class="textName" href="/move/1/3"> 3 </a>
+          <a class="textName" href="/move/1/4"> 4 </a>
+          <a class="textName" href="/move/1/5"> 5 </a>
+          <a class="textName" href="/move/1/6"> 6 </a>
+        </div>
+
     {% endif %}
 
     {% if player1.is_attacked == 0 and active_player == -1 %}
         <div>
-          <a class="textName" href="/move/2"> RZUCA CPU </a>
+          <a class="textName" href="/move/2/0"> RZUCA CPU </a>
         </div>
     {% endif %}
 

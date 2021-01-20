@@ -1,11 +1,7 @@
 def build_deck():
-    deck = [cardKeyBone, cardKeyBone, cardKeyBone, cardKeyMadness, cardKeyMadness, cardKeyMadness, cardKeyDeath,
-            cardKeyDeath, cardKeyDeath, cardKeyToxic, cardKeyToxic, cardKeyToxic, cardTorch, cardTorch, cardThief,
-            cardThief, cardThief, cardStasis, cardStasis, cardStasis, cardMagicArrow, cardMagicArrow,
-            cardMagicArrow,
-            cardMagicArrow, cardLoseHealth, cardLoseHealth, cardLoseHealth, cardLoseHealth, cardLoseItem,
-            cardLoseItem,
-            cardLoseItem]
+    deck = [cardKeyBone, cardKeyMadness, cardKeyDeath, cardTorch, cardTorch, cardThief,
+            cardThief, cardThief, cardMagicArrow, cardMagicArrow, cardMagicArrow,
+            cardMagicArrow, cardLoseHealth, cardLoseHealth, cardLoseItem, cardLoseItem, cardLoseItem]
     return deck
 
 

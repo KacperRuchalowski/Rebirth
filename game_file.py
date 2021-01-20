@@ -30,10 +30,10 @@ class PlayerCharacter:
     has_drawn = 0
     has_torch = 0
     keys = {
-        "toxic": 0,
-        "death": 0,
-        "bone": 0,
-        "madness": 0,
+        "toxic": 1,
+        "death": 1,
+        "bone": 1,
+        "madness": 1,
     }
     souls = {
         "toxic": 0,
@@ -220,25 +220,15 @@ def draw():
     elif card.name == 'recoverHealth':
         player1.health += 1
     elif card.name == 'thief':
-        stolen = random.randint(1, 4)
-        if stolen == 1:
-            player2.keys["bone"] = 0
-        elif stolen == 2:
-            player2.keys["death"] = 0
-        elif stolen == 2:
-            player2.keys["toxic"] = 0
-        elif stolen == 2:
-            player2.keys["madness"] = 0
+        for item in player2.keys:
+            if player2.keys[item] == 1:
+                player2.keys[item] = 0
+                break
     elif card.name == 'loseItem':
-        stolen = random.randint(1, 4)
-        if stolen == 1:
-            player1.keys["bone"] = 0
-        elif stolen == 2:
-            player1.keys["death"] = 0
-        elif stolen == 2:
-            player1.keys["toxic"] = 0
-        elif stolen == 2:
-            player1.keys["madness"] = 0
+        for item in player1.keys:
+            if player1.keys[item] == 1:
+                player1.keys[item] = 0
+                break
     elif card.name == "torch":
         player1.has_torch = 1
     return redirect(url_for('solo'))

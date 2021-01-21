@@ -42,6 +42,9 @@ class PlayerCharacter:
         "madness": 0,
     }
 
+    def lose_health(self):
+        self.health = 0
+
 
 @app.route('/')
 def home():
@@ -149,10 +152,23 @@ def move(player, torchAmount):
                 player2.active_field[0] = 0
                 player2.active_field[1] = 0
                 player2.active_field[1] += keep
-
         chance = random.randint(1, 100)
         if chance <= 20:
-            player2.is_attacked = 1
+            success_chance = random.randint(1, 50) + player2.strength + player2.resistance
+            if success_chance <= 25:
+                player2.health -= 1
+                if player2.health <= 0:
+                    player2.active_field = [8, 8]
+                    player2.health = 3
+                    player2.has_torch = 0
+                    for item in player2.keys:
+                        if player2.keys[item] == 1:
+                            player2.keys[item] = 0
+                            break
+            elif 25 <= success_chance <= 40:
+                player2.strength += 1
+            else:
+                player2.resistance += 1
         card = None
         active_player = active_player * -1
     return redirect(url_for('solo'))
@@ -171,6 +187,14 @@ def battle():
     else:
         player1.health -= 1
     player1.is_attacked = 0
+    if player1.health <= 0:
+        player1.active_field = [0, 0]
+        player1.health = 3
+        player1.has_torch = 0
+        for item in player1.keys:
+            if player1.keys[item] == 1:
+                player1.keys[item] = 0
+                break
 
     return redirect(url_for('solo'))
 
@@ -190,7 +214,14 @@ def battleBoss(bossID=None):
             player1.souls['madness'] = 1
     else:
         player1.health -= 1
-
+        if player1.health <= 0:
+            player1.active_field = [0, 0]
+            player1.health = 3
+            for item in player1.keys:
+                if player1.keys[item] == 1:
+                    player1.keys[item] = 0
+                    break
+            player1.has_torch = 0
     return redirect(url_for('solo'))
 
 
@@ -207,6 +238,14 @@ def draw():
         card = Deck.pop()
     if card.name == 'loseHealth':
         player1.health -= 1
+        if player1.health <= 0:
+            player1.active_field = [0, 0]
+            player1.health = 3
+            player1.has_torch = 0
+            for item in player1.keys:
+                if player1.keys[item] == 1:
+                    player1.keys[item] = 0
+                    break
     elif card.name == 'KeyBone':
         player1.keys["bone"] = 1
     elif card.name == 'KeyDeath':
@@ -217,6 +256,14 @@ def draw():
         player1.keys["madness"] = 1
     elif card.name == 'magicArrow':
         player2.health -= 1
+        if player2.health <= 0:
+            player2.active_field = [8, 8]
+            player2.health = 3
+            player2.has_torch = 0
+            for item in player2.keys:
+                if player2.keys[item] == 1:
+                    player2.keys[item] = 0
+                    break
     elif card.name == 'recoverHealth':
         player1.health += 1
     elif card.name == 'thief':

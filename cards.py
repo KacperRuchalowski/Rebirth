@@ -1,5 +1,5 @@
 def build_deck():
-    deck = [cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone, cardKeyMadness, cardKeyDeath, cardTorch, cardTorch, cardThief,
+    deck = [cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone, cardKeyMadness, cardKeyDeath, cardTorch, cardTorch, cardThief,
             cardThief, cardThief, cardMagicArrow, cardMagicArrow, cardMagicArrow,
             cardMagicArrow, cardLoseHealth, cardLoseHealth, cardLoseItem, cardLoseItem, cardLoseItem]
     return deck

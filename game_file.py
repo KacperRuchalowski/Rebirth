@@ -1,7 +1,7 @@
 import cards
 import random
 import pickle
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash
 
 from forms import RegistrationForm, LoginForm
 
@@ -238,21 +238,33 @@ class CPU:
             self.is_attacked = 1
             self.battle()
         special_field = [[0, 0], [0, 4], [0, 8], [4, 8], [8, 8], [8, 4], [8, 0], [4, 0]]
+        boss_field = [[0, 0], [0, 8], [8, 0], [8, 8]]
         if self.active_field in special_field:
             CPU_player.drawCard(player1)
+            if self.active_field in boss_field:
+                if self.active_field == [0, 0] and self.keys['death'] == 1:
+                    CPU_player.battleBoss('death')
+                elif self.active_field == [0, 8] and self.keys['toxic'] == 1:
+                    CPU_player.battleBoss('toxic')
+                elif self.active_field == [8, 8] and self.keys['bone'] == 1:
+                    CPU_player.battleBoss('bone')
+                elif self.active_field == [8, 0] and self.keys['madness'] == 1:
+                    CPU_player.battleBoss('madness')
         card = None
         active_player = active_player * -1
 
     def loseHealth(self):
         self.health -= 1
+        flash("Komputer traci 1 punkt życia")
         if self.health <= 0:
-            self.active_field = [0, 0]
+            self.active_field = [8, 8]
             self.health = 3
             self.has_torch = 0
             for item in self.keys:
                 if self.keys[item] == 1:
                     self.keys[item] = 0
                     break
+            flash("Komputer umiera. Wraca na początek")
 
     def drawCard(self, other_player):
         self.has_drawn = 1
@@ -266,30 +278,39 @@ class CPU:
             card = Deck.pop()
         if card.name == 'KeyBone':
             self.keys["bone"] = 1
+            flash("Komputer zyskuje kartę Lorda Kości")
         elif card.name == 'KeyDeath':
             self.keys["death"] = 1
+            flash("Komputer zyskuje kartę Lorda Śmierci")
         elif card.name == 'KeyToxic':
             self.keys["toxic"] = 1
+            flash("Komputer zyskuje kartę Lorda Zarazy")
         elif card.name == 'KeyMadness':
             self.keys["madness"] = 1
+            flash("Komputer zyskuje kartę Lorda Obłędu")
         elif card.name == 'loseHealth':
             self.loseHealth()
         elif card.name == 'magicArrow':
             other_player.loseHealth()
+            flash("Komputer strzela magiczną strzałą. Tracisz 1 pkt życia")
         elif card.name == 'recoverHealth':
             self.health += 1
+            flash("Komputer odzyskuje 1 pkt życia")
         elif card.name == "torch":
             self.has_torch = 1
+            flash("Komputer otrzymuje pochodnię")
         elif card.name == 'thief':
             for item in other_player.keys:
                 if other_player.keys[item] == 1:
                     other_player.keys[item] = 0
                     break
+            flash("Komputer kradnie Ci jedną kartę!")
         elif card.name == 'loseItem':
             for item in self.keys:
                 if self.keys[item] == 1:
                     self.keys[item] = 0
                     break
+            flash("Komputer traci kartę")
 
     def battle(self):
         attack_power = random.randint(1, 6) + self.strength
@@ -298,25 +319,34 @@ class CPU:
             check = random.randint(1, 2)
             if check == 1:
                 self.resistance += 1
+                flash("Komputer pokonuje demona. Zyskuje odporność")
             else:
                 self.strength += 1
+                flash("Komputer pokonuje demona. Zyskuje siłę")
         else:
+            flash("Komputer przegrywa walkę z demonem")
             self.loseHealth()
         self.is_attacked = 0
 
     def battleBoss(self, bossID):
+        flash("Komputer walczy z Lordem")
         attack_power = random.randint(1, 6) + self.strength
         boss_attack = random.randint(1, 10) - self.resistance
         if attack_power > boss_attack:
             if bossID == 'death':
-                player1.souls['death'] = 1
+                self.souls['death'] = 1
+                flash("Komputer wygrywa. Zyskuje duszę Śmierci")
             elif bossID == 'bone':
-                player1.souls['bone'] = 1
+                self.souls['bone'] = 1
+                flash("Komputer wygrywa. Zyskuje duszę Kości")
             elif bossID == 'toxic':
-                player1.souls['toxic'] = 1
+                self.souls['toxic'] = 1
+                flash("Komputer wygrywa. Zyskuje duszę Zarazy")
             elif bossID == 'madness':
-                player1.souls['madness'] = 1
+                self.souls['madness'] = 1
+                flash("Komputer wygrywa. Zyskuje duszę Obłędu")
         else:
+            flash("Komputer przegrywa")
             self.loseHealth()
 
 

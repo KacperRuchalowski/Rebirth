@@ -256,6 +256,7 @@
     </div>
             {% endif %}
         {% elif player1.is_attacked == 0 %}
+
       <div class="textName"> IMIĘ GRACZA:
           {{ player2.name }}
       </div>
@@ -352,6 +353,15 @@
                 </table>
         </div>
         {% endif %}
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=textName>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
   </div>
 
 </div>

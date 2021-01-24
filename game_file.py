@@ -46,6 +46,15 @@ class PlayerCharacter:
         "madness": 0,
     }
 
+    def checkWin(self):
+        x = 0
+        for soul in self.souls:
+            if self.souls[soul] == 1:
+                x += 1
+        if x == 4:
+            self.has_won = 1
+            return True
+
     def move(self, torch):
         global result, keep, card, active_player
         self.is_attacked = 0
@@ -170,12 +179,6 @@ class PlayerCharacter:
                 player1.souls['madness'] = 1
         else:
             self.loseHealth()
-        for soul in self.souls:
-            if self.souls[soul] == 0:
-                break
-            else:
-                self.has_won = 1
-                return redirect(url_for('win'))
 
 
 class CPU:
@@ -202,6 +205,15 @@ class CPU:
         "bone": 0,
         "madness": 0,
     }
+
+    def checkWin(self):
+        x = 0
+        for soul in self.souls:
+            if self.souls[soul] == 1:
+                x += 1
+        if x == 4:
+            self.has_won = 1
+            return True
 
     def move(self, torch):
         global result, keep, card, active_player
@@ -316,8 +328,8 @@ class CPU:
                 if other_player.keys[item] == 1:
                     other_player.keys[item] = 0
                     self.keys[item] = 1
+                    flash("Komputer kradnie Ci kartę: ", item)
                     break
-            flash("Komputer kradnie Ci jedną kartę!")
         elif card.name == 'loseItem':
             for item in self.keys:
                 if self.keys[item] == 1:
@@ -361,12 +373,6 @@ class CPU:
         else:
             flash("Komputer przegrywa")
             self.loseHealth()
-        for soul in self.souls:
-            if self.souls[soul] == 0:
-                break
-            else:
-                self.has_won = 1
-                return redirect(url_for('win'))
 
 
 @app.route('/')
@@ -385,6 +391,8 @@ def createCharacter():
     if form.validate_on_submit():
         global player1
         global CPU_player
+        player1 = None
+        CPU_player = None
         player1 = PlayerCharacter(name=form.username.data)
         CPU_player = CPU(name='CPU')
         CPU_player.active_field = [8, 8]
@@ -422,8 +430,13 @@ def draw():
 
 @app.route('/solo/')
 def solo():
-    return render_template('game_solo.html', player1=player1, player2=CPU_player, Deck=Deck,
-                           keep=keep, ConstantDeck=ConstantDeck, card=card, active_player=active_player)
+    check = player1.checkWin()
+    check2 = CPU_player.checkWin()
+    if check is True or check2 is True:
+        return redirect(url_for('win'))
+    else:
+        return render_template('game_solo.html', player1=player1, player2=CPU_player, Deck=Deck,
+                               keep=keep, ConstantDeck=ConstantDeck, card=card, active_player=active_player)
 
 
 @app.route('/loadFiles')

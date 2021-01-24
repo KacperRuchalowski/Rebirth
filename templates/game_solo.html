@@ -125,8 +125,6 @@
         <div>
           <a class="textName" href="/move/1/0"> RZUT KOSTKĄ </a>
           <a class="textName" href="/save"> ZAPISZ GRĘ! </a>
-        {% if player1.has_won == 1 %}
-            <a class="textName" href="/win"> ZAKOŃCZ GRĘ! </a>
         </div>
             {% endif %}
     {% elif player1.has_torch == 1 and player1.is_attacked == 0 and active_player == 1 %}

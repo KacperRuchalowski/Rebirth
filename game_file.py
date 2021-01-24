@@ -1,8 +1,10 @@
 import cards
 import random
 import pickle
+from os import listdir
+from os.path import isfile, join
 from flask import Flask, render_template, redirect, url_for, flash
-
+from datetime import datetime
 from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
@@ -12,6 +14,7 @@ app.config['SECRET_KEY'] = '09412da809127wdawwar'
 Deck = cards.build_deck()
 ConstantDeck = cards.ConstantDeck
 
+SaveData = []
 result = 0
 keep = 0
 card = None
@@ -402,24 +405,34 @@ def solo():
                            keep=keep, ConstantDeck=ConstantDeck, card=card, active_player=active_player)
 
 
-@app.route('/loadPlayer', methods=['GET', 'POST'])
-def LoadCharacter():
-    form = LoginForm()
-    return render_template('characterLoading.html', form=form)
+@app.route('/loadFiles')
+def AllLoaded():
+    global onlyfiles
+    onlyfiles = [f for f in listdir('./Saves') if isfile(join('./Saves', f))]
+    return render_template('characterLoading.html', onlyfiles=onlyfiles)
 
 
 @app.route('/save')
 def save():
+    global SaveData
     data = [player1, CPU_player]
-    with open(player1.name, 'wb') as gameSave:
+    filepath = './Saves/' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.save'
+    with open(filepath, 'wb') as gameSave:
         pickle.dump(data, gameSave)
+    flash("Zapisałem grę!")
     return redirect(url_for('solo'))
 
 
-@app.route('/load')
-def load():
-    with open(player1.name, "rb") as gameSave:
-        pickle.load(gameSave)
+@app.route('/load/<SaveID>')
+def load(SaveID=None):
+    global player1
+    global CPU_player
+    saveFile = int(SaveID)
+    filepath = './Saves/' + onlyfiles[saveFile]
+    with open(filepath, "rb") as gameSave:
+        data = pickle.load(gameSave)
+        player1 = data[0]
+        CPU_player = data[1]
     return redirect(url_for('solo'))
 
 

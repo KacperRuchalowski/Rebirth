@@ -5,38 +5,12 @@
 
     <div class="content-section">
 
-    <form method="POST" action="">
 
-        {{ form.hidden_tag() }}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4"> WCZYTAJ POSTAĆ </legend>
-            <div class="form-group">
-                {{ form.username.label(class="form-control-label") }}
-                {{ form.username(class="form-control") }}
-            </div>
-
-            <div class="form-group">
-                {{ form.submit() }}
-            </div>
-
-
-            <div class="border-top pt-3">
-
-                <small class="text-muted">
-
-                    Chcesz stworzyć nową postać?
-                    Kliknij  <a class="ml-2" href="{{ url_for('createCharacter') }}"> TUTAJ </a>
-
-                </small>
-
-
-            </div>
-
-
-        </fieldset>
-
-    </form>
-
+    {% for file in onlyfiles %}
+    <div>
+        <a href="/load/{{ onlyfiles.index(file) }}">Zapis numer {{ onlyfiles.index(file) }}</a>
+    </div>
+    {% endfor %}
 
 
 

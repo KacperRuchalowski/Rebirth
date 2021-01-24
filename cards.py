@@ -1,7 +1,16 @@
 def build_deck():
-    deck = [cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone,cardKeyBone, cardKeyMadness, cardKeyDeath, cardTorch, cardTorch, cardThief,
-            cardThief, cardThief, cardMagicArrow, cardMagicArrow, cardMagicArrow,
-            cardMagicArrow, cardLoseHealth, cardLoseHealth, cardLoseItem, cardLoseItem, cardLoseItem]
+    deck = [cardKeyBone, cardKeyBone, cardKeyBone,
+            cardKeyMadness, cardKeyMadness, cardKeyMadness,
+            cardKeyDeath, cardKeyDeath, cardKeyDeath,
+            cardKeyToxic, cardKeyToxic, cardKeyToxic,
+            cardTorch, cardTorch,
+            cardThief, cardThief, cardThief,
+            cardMagicArrow, cardMagicArrow, cardMagicArrow, cardMagicArrow,
+            cardLoseHealth, cardLoseHealth,
+            cardLoseItem, cardLoseItem,
+            cardRecoverHealth, cardRecoverHealth, cardRecoverHealth,
+
+            ]
     return deck
 
 
@@ -50,9 +59,9 @@ cardMagicArrow = ActionCard()
 cardMagicArrow.name = 'magicArrow'
 cardMagicArrow.image = '/static/DarkSoulsCard/magic_arrow.png'
 
-recoverHealth = ActionCard()
-recoverHealth.name = 'recoverHealth'
-recoverHealth.image = '/static/DarkSoulsCard/recover_health.png'
+cardRecoverHealth = ActionCard()
+cardRecoverHealth.name = 'recoverHealth'
+cardRecoverHealth.image = '/static/DarkSoulsCard/recover_health.png'
 
 cardStasis = ActionCard()
 cardStasis.name = 'stasis'

@@ -5,7 +5,7 @@ from os import listdir
 from os.path import isfile, join
 from flask import Flask, render_template, redirect, url_for, flash
 from datetime import datetime
-from forms import RegistrationForm, LoginForm
+from forms import RegistrationForm
 
 app = Flask(__name__)
 
@@ -32,6 +32,7 @@ class PlayerCharacter:
     is_attacked = 0
     has_drawn = 0
     has_torch = 0
+    has_won = 0
     keys = {
         "toxic": 0,
         "death": 0,
@@ -134,6 +135,7 @@ class PlayerCharacter:
             for item in other_player.keys:
                 if other_player.keys[item] == 1:
                     other_player.keys[item] = 0
+                    self.keys[item] = 1
                     break
         elif card.name == 'loseItem':
             for item in self.keys:
@@ -168,6 +170,12 @@ class PlayerCharacter:
                 player1.souls['madness'] = 1
         else:
             self.loseHealth()
+        for soul in self.souls:
+            if self.souls[soul] == 0:
+                break
+            else:
+                self.has_won = 1
+                return redirect(url_for('win'))
 
 
 class CPU:
@@ -181,6 +189,7 @@ class CPU:
     is_attacked = 0
     has_drawn = 0
     has_torch = 0
+    has_won = 0
     keys = {
         "toxic": 0,
         "death": 0,
@@ -306,6 +315,7 @@ class CPU:
             for item in other_player.keys:
                 if other_player.keys[item] == 1:
                     other_player.keys[item] = 0
+                    self.keys[item] = 1
                     break
             flash("Komputer kradnie Ci jedną kartę!")
         elif card.name == 'loseItem':
@@ -351,11 +361,22 @@ class CPU:
         else:
             flash("Komputer przegrywa")
             self.loseHealth()
+        for soul in self.souls:
+            if self.souls[soul] == 0:
+                break
+            else:
+                self.has_won = 1
+                return redirect(url_for('win'))
 
 
 @app.route('/')
 def home():
     return render_template('game_mode.html')
+
+
+@app.route('/win')
+def win():
+    return render_template('win.html', player1=player1, player2=CPU_player)
 
 
 @app.route('/createPlayer', methods=['GET', 'POST'])
